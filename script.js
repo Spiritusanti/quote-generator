@@ -21,16 +21,17 @@ function complete() {
     }
 }
 
+let apiQuotes = [];
+
 // Get Quote from API
-async function getQuote() {
+async function getQuotes() {
     loading();
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-    const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
+    const apiUrl = 'https://type.fit/api/quotes';
     try {
-        const response = await fetch(proxyUrl + apiUrl);
-        const data  = await response.json();
+        const response = await fetch(apiUrl);
+        apiQuotes  = await response.json();
         // if author is blank add unknown
-        if (data.quoteAuthor === '') {
+        if (data.author === '') {
             authorText.innerText = 'Unknown'
         } else {
             authorText.innerText = data.quoteAuthor;
@@ -45,6 +46,7 @@ async function getQuote() {
         // stop loader, show quote
         complete();
     } catch(error) {
+        alert('Something went wrong!' + error);
         getQuote();
     }
 }
@@ -58,9 +60,9 @@ function tweetQuote() {
 }
 
 // Event Listeners
-newQuoteBtn.addEventListener('click', getQuote);
+newQuoteBtn.addEventListener('click', getQuotes);
 twitterBtn.addEventListener('click', tweetQuote);
 
 
 // On load
-getQuote();
+getQuotes();

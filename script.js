@@ -42,7 +42,11 @@ const newQuote = () => {
     quoteText.textContent = quote.text;
 }
 
-// Get Quote from API
+/* 
+Get Quote from API 
+API Home Page https://quotes-react.netlify.app/
+API Github https://github.com/ssokurenko/quotes-react-app
+*/
 async function getQuotes() {
     loading();
     const apiUrl = 'https://type.fit/api/quotes';

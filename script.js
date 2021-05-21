@@ -23,6 +23,25 @@ function complete() {
 
 let apiQuotes = [];
 
+// show new quote
+const newQuote = () => {
+    index = Math.floor(Math.random() * apiQuotes.length);
+    const quote = apiQuotes[index];
+    // check if author field is blank
+    if (!quote.author) {
+        authorText.textContent = '~ Unkown ~';
+    } else {
+        authorText.textContent = quote.author;
+    }
+    // check quote length to determine styling
+    if (quote.text.length > 80) {
+        quoteText.classList.add('long-quote');
+    } else {
+        quoteText.classList.remove('long-quote');
+    }
+    quoteText.textContent = quote.text;
+}
+
 // Get Quote from API
 async function getQuotes() {
     loading();
@@ -30,24 +49,11 @@ async function getQuotes() {
     try {
         const response = await fetch(apiUrl);
         apiQuotes  = await response.json();
-        // if author is blank add unknown
-        if (data.author === '') {
-            authorText.innerText = 'Unknown'
-        } else {
-            authorText.innerText = data.quoteAuthor;
-        }
-        // reduce font size for long quotes
-        if (data.quoteText.length > 120) {
-            quoteText.classList.add('long-quote');
-        } else {
-            quoteText.classList.remove('long-quote');
-        }
-        quoteText.innerText = data.quoteText;
-        // stop loader, show quote
+        newQuote();
         complete();
     } catch(error) {
         alert('Something went wrong!' + error);
-        getQuote();
+        getQuotes();
     }
 }
 
@@ -60,7 +66,7 @@ function tweetQuote() {
 }
 
 // Event Listeners
-newQuoteBtn.addEventListener('click', getQuotes);
+newQuoteBtn.addEventListener('click', newQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 
 
